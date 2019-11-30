@@ -1,0 +1,24 @@
+{
+  "name": "prometheus-edu-api",
+  "version": "1.0.0",
+  "description": "Prometheus Edu API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hamzabell/prometheus-edu-api.git"
+  },
+  "author": "Bassey Atanang Akan (akanbassey8@gmail.com)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hamzabell/prometheus-edu-api/issues"
+  },
+  "homepage": "https://github.com/hamzabell/prometheus-edu-api#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "mongoose": "^5.7.13"
+  }
+}
