@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 /* eslint-disable no-underscore-dangle */
 const { model, Schema } = require('mongoose');
 const Validator = require('validator');
