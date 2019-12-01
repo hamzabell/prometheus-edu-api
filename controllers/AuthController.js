@@ -6,22 +6,47 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const reponseHelper = require('../helpers/responseHelper');
+const userService = require('../services/userService');
 require('dotenv').config();
 
 
 const secret = process.env.SECRET || 'secret';
 
 module.exports = {
-  register: (req, res) => {
+  register: async (req, res) => {
     try {
-      const newUser = new User(req.body);
+      let newUser;
+      let newTeacher;
+      let newSchool;
+      let newParent;
+      const { userRole } = req.body;
+      if (userRole === 'admin') {
+        if (!req.body.address) {
+          return reponseHelper.json(res, 400, 'Please Provide addresss of the School', null);
+        }
+        const { user, school } = await userService.createAdminUser(req.body);
+        newSchool = school;
+        newUser = user;
+      }
+      if (userRole === 'parent') {
+        newUser = await userService.createParentUser(req.body);
+      }
+      if (userRole === 'teacher') {
+        newUser = await userService.createTeacherUser(req.body);
+      }
+
       bcrypt.genSalt(10, (err, salt) => {
         if (err) throw err;
         bcrypt.hash(newUser.password, salt,
           (err, hash) => {
             if (err) throw err;
             newUser.password = hash;
-            newUser.save().then((user) => res.json(user))
+            newUser.save().then((user) => {
+              if (userRole === 'admin') newSchool.save();
+              if (userRole === 'parent') newParent.save();
+              if (userRole === 'teacher') newTeacher.save();
+              res.json(user);
+            })
               .catch((err) => res.status(400).json(err));
           });
       });
