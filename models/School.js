@@ -8,6 +8,7 @@ const School = {
     type: Schema.Types.ObjectId,
     ref: 'Users',
     required: true,
+    autopopulate: true,
   },
   address: {
     type: Object,
@@ -17,5 +18,7 @@ const School = {
 
 
 const schoolSchema = new Schema(School);
-const schoolModel = model('School', schoolSchema);
+schoolSchema.plugin(require('mongoose-autopopulate'));
+
+const schoolModel = model('Schools', schoolSchema);
 module.exports = schoolModel;

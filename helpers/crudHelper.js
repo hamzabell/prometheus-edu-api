@@ -14,9 +14,9 @@ module.exports = {
       return responseHelper.json(res, 500, 'Server Error', error.message);
     }
   },
-  read: async (model, modelName, req, res) => {
+  read: async (model, modelName, req, res, condition = {}) => {
     try {
-      const requestedModel = await model.findById(req.params.id);
+      const requestedModel = await model.findById(req.params.id).where(condition);
       if (!requestedModel) {
         return responseHelper.json(res, 400, `${modelName} cannot be found`, null);
       }
@@ -25,9 +25,9 @@ module.exports = {
       return responseHelper.json(res, 500, 'Server Error', error.message);
     }
   },
-  count: async (model, modelName, req, res) => {
+  count: async (model, modelName, req, res, condition = {}) => {
     try {
-      const requestedCount = await model.count();
+      const requestedCount = await model.count().where(condition);
       if (!requestedCount) {
         return responseHelper.json(res, 400, `${modelName} cannot be found`, null);
       }
@@ -40,9 +40,9 @@ module.exports = {
       return responseHelper.json(res, 500, 'Server Error', error.message);
     }
   },
-  all: async (model, modelName, req, res) => {
+  all: async (model, modelName, req, res, condition = {}) => {
     try {
-      const allModels = await model.find();
+      const allModels = await model.find().where(condition);
       if (!allModels) {
         return responseHelper.json(res, 400, `All ${modelName} cannot be retrieved`, null);
       }
@@ -51,10 +51,10 @@ module.exports = {
       return responseHelper.json(res, 500, 'Server Error', error.message);
     }
   },
-  update: async (model, modelName, req, res) => {
+  update: async (model, modelName, req, res, condition = {}) => {
     try {
       const data = req.body;
-      const updatedModel = await model.findByIdAndUpdate(req.params.id, data);
+      const updatedModel = await model.findByIdAndUpdate(req.params.id, data).where(condition);
       if (!updatedModel) {
         return responseHelper.json(res, 400, `${modelName} cannot be found`, null);
       }
@@ -63,9 +63,9 @@ module.exports = {
       return responseHelper.json(res, 500, 'Server Error', error.message);
     }
   },
-  delete: async (model, modelName, req, res) => {
+  delete: async (model, modelName, req, res, condition = {}) => {
     try {
-      const deletedModel = await model.findByIdAndRemove(req.params.id);
+      const deletedModel = await model.findByIdAndRemove(req.params.id).where(condition);
       if (!deletedModel) {
         return responseHelper.json(res, 400, `${modelName} cannot be found`, null);
       }
