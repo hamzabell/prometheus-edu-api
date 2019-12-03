@@ -29,10 +29,20 @@ module.exports = {
         newUser = user;
       }
       if (userRole === 'parent') {
-        newUser = await userService.createParentUser(req.body);
+        if (!req.body.schoolId) {
+          return reponseHelper.json(res, 400, 'Please Provide id of school', null);
+        }
+        const { user, parent } = await userService.createParentUser(req.body);
+        newParent = parent;
+        newUser = user;
       }
       if (userRole === 'teacher') {
-        newUser = await userService.createTeacherUser(req.body);
+        if (!req.body.schoolId) {
+          return reponseHelper.json(res, 400, 'Please Provide id of school', null);
+        }
+        const { user, teacher } = await userService.createTeacherUser(req.body);
+        newTeacher = teacher;
+        newUser = user;
       }
 
       bcrypt.genSalt(10, (err, salt) => {
